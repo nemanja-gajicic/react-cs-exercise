@@ -71,7 +71,12 @@ class App extends React.Component<IProps, IState>{
   {
     const updatedRows = this.state.calculatorRows.map((row, currentIndex) => {
       if (currentIndex === index) {
-        return { ...row, value: e.target.valueAsNumber };
+        // if the parsed value is NaN
+        if ( !e.target.valueAsNumber ) {
+          return {...row, value: 0}
+        } else { 
+          return { ...row, value: e.target.valueAsNumber };
+        }
       }
       return row;
     })

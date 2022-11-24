@@ -12,6 +12,8 @@ export const CalculatorRow = (props: any) => {
                 value={props.value}
                 disabled={props.isDisabled}
                 onChange={e => props.handleInputChange(e, props.id)}
+                min="0"
+                tabIndex={props.id+1}
             />
             <button type="button"
                 disabled={props.isDisabled}
