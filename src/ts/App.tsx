@@ -3,7 +3,7 @@ import Title from "./components/Title";
 import "../css/styles.scss";
 import { CalculatorRowsList } from "./components/CalculatorRowsList";
 
-interface IProps { }
+interface IProps {}
 
 interface IState {
   version: string,
@@ -22,9 +22,9 @@ class App extends React.Component<IProps, IState>{
     this.state = {
       version: React.version,
       calculatorRows: [
-        /* { sign: "plus", value: 100, disabled: false },
+        { sign: "plus", value: 100, disabled: false },
         { sign: "plus", value: 30, disabled: false },
-        { sign: "minus", value: 7, disabled: false }, */
+        { sign: "minus", value: 7, disabled: false },
       ]
     }
   }
@@ -41,15 +41,18 @@ class App extends React.Component<IProps, IState>{
   }
 
   /**
-   * Sums the values of input fields placed in the state.calculatorRows, considering also the 
-   * "disabled" and "sign" properties in each of the objects 
+   * Sums the values of input fields placed in the state.calculatorRows, 
+   * considering also the "disabled","sign" properties in each of the objects 
    * @returns the sum of all input fields (values) in CalculatorRow components
    */
   calculateResult = (): number => {
-    return (this.state.calculatorRows.reduce((partialSum: number, currentRow: IRowComponent): number => {
+    return (this.state.calculatorRows.reduce(
+      (partialSum: number, currentRow: IRowComponent): number => {
       // this check could / should be more robust
       if (!currentRow.disabled) {
-        return currentRow.sign === "minus" ? partialSum - currentRow.value : partialSum + currentRow.value;
+        return currentRow.sign === "minus" ? 
+          partialSum - currentRow.value : 
+          partialSum + currentRow.value;
       }
       return partialSum;
     }, 0)
@@ -57,12 +60,15 @@ class App extends React.Component<IProps, IState>{
   }
 
   /**
-   * 
-   * @param e - the input field being changed 
-   * @param index - the index of the representation of the row in the state.calculatorRows
+   * Updates the object in the state.calculatorRows array whose input value 
+   * has changed and updates the state
+   * @param e - the event occuring, in this case on an <input> element
+   * @param index - the index of the row's representation in the 
+   * state.calculatorRows
    */
-  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number): void => {
-
+  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number): 
+  void => 
+  {
     const updatedRows = this.state.calculatorRows.map((row, currentIndex) => {
       if (currentIndex === index) {
         return { ...row, value: e.target.valueAsNumber };
@@ -72,8 +78,16 @@ class App extends React.Component<IProps, IState>{
     this.setState({ calculatorRows: updatedRows });
   }
 
-  handleSelectChange = (e: React.ChangeEvent<HTMLInputElement>, index: number): void => {
-
+  /** 
+   * Updates the object in the state.calculatorRows array whose sign value 
+   * has changed and updates the state
+   * @param e - the event occuring, in this case on a <select> element
+   * @param index - the index of the row's representation in the 
+   * state.calculatorRows
+   */
+  handleSelectChange = (e: React.ChangeEvent<HTMLInputElement>, index: number): 
+  void => 
+  {
     const updatedRows = this.state.calculatorRows.map((row, currentIndex) => {
       if (currentIndex === index) {
         return { ...row, sign: e.target.value };
@@ -83,6 +97,12 @@ class App extends React.Component<IProps, IState>{
     this.setState({ calculatorRows: updatedRows });
   }
 
+  /**
+   * Inverts the value of the disabled property of the row object representation
+   * inside the state.calculatorRows array and updates the state 
+   * @param index - the index of the row's representation in the 
+   * state.calculatorRows
+   */
   handleDisableToggle = (index: number): void => {
     const updatedRows = this.state.calculatorRows.map((row, currentIndex) => {
       if (currentIndex === index) {
@@ -93,6 +113,12 @@ class App extends React.Component<IProps, IState>{
     this.setState({ calculatorRows: updatedRows });
   }
 
+  /**
+   * Handles the delete button click in each of the rows, by removing the object
+   * from state.calculatorRows and updating the state 
+   * @param index - corresponds to the index of the row's representation in 
+   * state.calculatorRows array
+   */
   handleDeleteClick = (index: number): void => {
     const copy = [...this.state.calculatorRows];
     copy.splice(index,1);
@@ -109,6 +135,7 @@ class App extends React.Component<IProps, IState>{
           Add row
         </button>
         <CalculatorRowsList
+        // prop drilling that should be resolved
           rows={this.state.calculatorRows}
           handleInputChange={this.handleInputChange}
           handleSelectChange={this.handleSelectChange}

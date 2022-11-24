@@ -1,5 +1,4 @@
 export const CalculatorRow = (props: any) => {
-
     return (
         <div>
             <select
